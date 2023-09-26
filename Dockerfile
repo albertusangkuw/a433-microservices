@@ -1,8 +1,10 @@
 # Submission Dicoding - Proyek Deploy Aplikasi Item App dengan Docker Compose
 # Albertus Septian Angkuw
 
+# Menggunakan base image Node.js versi 14.
 FROM node:14
 
+# Working directory untuk container
 WORKDIR /app
 
 # Menyalin semua file ke working directory
@@ -17,5 +19,5 @@ RUN npm install --production --unsafe-perm && npm run build
 # Post yang digunakan 
 EXPOSE 8080
 
-# Untuk menjalankan aplikasi
+# Untuk menjalankan server
 CMD [ "npm", "start" ]

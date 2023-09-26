@@ -1,14 +1,22 @@
+# Albertus Septian Angkuw - Submission Proyek Deploy Aplikasi Item App dengan Docker Compose
 version: "3.7"
-
+# Daftar Service
 services:
   item-app:
-    image: proyek-pertama:latest
+    # Menggunakan image yang sebelumnya sudah diupload ke docker hub
+    image: albertushub/proyek-pertama:v1
     ports:
       - 8080:8080   
+    # Restart Container ketika terhenti
+    restart: always
   item-db:
+    # Menggunakan mongo versi 3 dengan volume yang diatach agar data tidak hilang ketika container dihapus
     image: mongo:3.6.23
     volumes:
       - app-db:/data/db
+    # Restart Container ketika terhenti
+    restart: always
 
+# Volume yang dibuat
 volumes:
   app-db:
