@@ -6,8 +6,8 @@ services:
     # Menggunakan image yang sebelumnya sudah diupload ke docker hub
     image: albertushub/proyek-pertama:v1
     ports:
-      # Container App Port -> Host Post
-      - 8080:80   
+      # Host Post -> Container App Port
+      - 80:8080
     # Restart Container ketika terhenti
     restart: always
   item-db:
