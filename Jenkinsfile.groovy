@@ -3,23 +3,26 @@
 pipeline{
     agent any
     stages{
-        // stage("lint-dockerfile"){
-        //     agent {
-        //         docker {
-        //             image 'hadolint/hadolint:latest-alpine'
-        //         }
-        //     }
-        //     steps{
-        //         sh 'hadolint -v'
-        //         sh 'hadolint Dockerfile -V'
-        //     }
-        // }
+        stage("lint-dockerfile"){
+            // lint-dockerfile berisi proses untuk menginstal hadolint dan menjalankannya terhadap berkas Dockerfile
+            agent {
+                docker {
+                    image 'hadolint/hadolint:latest-alpine'
+                }
+            }
+            steps{
+                sh 'hadolint -v'
+                sh 'hadolint Dockerfile -V'
+            }
+        }
         stage("test-app"){
+            // Menjalankan unit test untuk backend
             agent{
                 docker {
                     image 'golang:1.15-alpine'
                 }
             }
+            // Set Env untuk golang
             environment {
         		GOBIN = '/tmp/go-bin'
         		GOCACHE = '/tmp/go-build'
@@ -29,14 +32,13 @@ pipeline{
             steps{
                 script{
                     sh 'go version'
-                    sh 'env'
-                    sh 'ls'
                     sh 'go mod download'
                     sh 'go test -v -short --count=1 $(go list ./...)'
                 }
             }
         }
         stage("build-app-karsajobs"){
+            // Build dan push image ke github package
              steps {
                 withCredentials([usernamePassword(credentialsId: 'd4ef32a9-8bb4-4e57-a8d7-0a080dd7c5d4', 
                                                     passwordVariable: 'GITHUB_TOKEN',   
