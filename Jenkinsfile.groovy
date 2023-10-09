@@ -41,6 +41,7 @@ pipeline{
                 withCredentials([usernamePassword(credentialsId: 'd4ef32a9-8bb4-4e57-a8d7-0a080dd7c5d4', 
                                                     passwordVariable: 'GITHUB_TOKEN',   
                                                     usernameVariable: 'GITHUB_USERNAME')]) {
+                    sh 'chmod +x build_push_image_karsajobs.sh'
                     sh './build_push_image_karsajobs.sh'
                 }
             }
