@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"strconv"
@@ -27,12 +28,14 @@ func home(w http.ResponseWriter, r *http.Request) {
 func (app *application) getJobs(w http.ResponseWriter, r *http.Request) {
 	data, err := app.jobs.GetJobPosts(context.Background())
 	if err != nil {
+		fmt.Println(err.Error())
 		http.Error(w, http.StatusText(500), 500)
 		return
 	}
 
 	out, err := json.Marshal(data)
 	if err != nil {
+		fmt.Println(err.Error())
 		http.Error(w, http.StatusText(500), 500)
 		return
 	}
@@ -52,6 +55,7 @@ func (app *application) getJob(w http.ResponseWriter, r *http.Request) {
 
 	out, err := json.Marshal(data)
 	if err != nil {
+		fmt.Println(err.Error())
 		http.Error(w, http.StatusText(500), 500)
 		return
 	}
@@ -63,12 +67,14 @@ func (app *application) getJob(w http.ResponseWriter, r *http.Request) {
 func (app *application) InsertJob(w http.ResponseWriter, r *http.Request) {
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
+		fmt.Println(err.Error())
 		http.Error(w, http.StatusText(500), 500)
 		return
 	}
 
 	var jp models.JobPost
 	if err := json.Unmarshal(body, &jp); err != nil {
+		fmt.Println(err.Error())
 		http.Error(w, http.StatusText(500), 500)
 		return
 	}
@@ -78,6 +84,7 @@ func (app *application) InsertJob(w http.ResponseWriter, r *http.Request) {
 
 	_, err = app.jobs.InsertJobpost(context.Background(), app.getCount(), jp.Company, jp.Role, jp.Location, jp.Description, jp.Status, time.Now())
 	if err != nil {
+		fmt.Println(err.Error())
 		http.Error(w, http.StatusText(500), 500)
 		return
 	}
@@ -93,6 +100,7 @@ func (app *application) DeleteJob(w http.ResponseWriter, r *http.Request) {
 
 	data, err := app.jobs.DeleteJobPost(context.Background(), id)
 	if err != nil {
+		fmt.Println(err.Error())
 		http.Error(w, http.StatusText(500), 500)
 		return
 	}
@@ -106,6 +114,7 @@ func (app *application) DeleteJob(w http.ResponseWriter, r *http.Request) {
 func (app *application) health(w http.ResponseWriter, r *http.Request) {
 	client, err := openDB()
 	if err != nil {
+		fmt.Println(err.Error())
 		http.Error(w, http.StatusText(500), 500)
 		return
 	}
@@ -125,6 +134,7 @@ func (app *application) health(w http.ResponseWriter, r *http.Request) {
 	})
 
 	if err != nil {
+		fmt.Println(err.Error())
 		http.Error(w, http.StatusText(500), 500)
 		return
 	}
