@@ -14,5 +14,5 @@ ENV NODE_ENV=production
 RUN npm ci
 # Copy semua file js ke workdir
 COPY ./*.js ./
-# Command menjalankan consumer.js
-CMD ["node", "consumer.js"]
+# Command menjalankan index.js
+CMD ["node", "index.js"]
